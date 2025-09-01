@@ -2,6 +2,8 @@
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+<img width="1919" height="959" alt="image" src="https://github.com/user-attachments/assets/59562932-00f7-4b92-a200-903fb7cd95a4" />
+
 ## Getting Started
 
 Install dependencies
