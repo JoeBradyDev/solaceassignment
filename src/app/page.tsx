@@ -2,6 +2,8 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { Advocate } from "@/frontend/types";
+import { AdvocateTable } from "@/frontend/components/AdvocateTable";
+import { SearchBar } from "@/frontend/components/SearchBar";
 
 export default function Home() {
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
@@ -38,54 +40,13 @@ export default function Home() {
   }, [advocates, searchInputValue]);
 
   return (
-    <main style={{ margin: "24px" }}>
-      <h1>Solace Advocates</h1>
-      <br />
-      <br />
-      <div>
-        <p>Search</p>
-        <p>
-          Searching for: <span id="search-term"></span>
-        </p>
-        <input
-          style={{ border: "1px solid black" }}
-          onChange={handleSearchInputChange}
-          value={searchInputValue}
-        />
-        <button onClick={handleResetButtonClick}>Reset Search</button>
-      </div>
-      <br />
-      <br />
-      <table>
-        <thead>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>City</th>
-          <th>Degree</th>
-          <th>Specialties</th>
-          <th>Years of Experience</th>
-          <th>Phone Number</th>
-        </thead>
-        <tbody>
-          {filteredAdvocates.map((advocate) => {
-            return (
-              <tr>
-                <td>{advocate.firstName}</td>
-                <td>{advocate.lastName}</td>
-                <td>{advocate.city}</td>
-                <td>{advocate.degree}</td>
-                <td>
-                  {advocate.specialties.map((s) => (
-                    <div>{s}</div>
-                  ))}
-                </td>
-                <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+    <main className="bg-gray-50 pt-16 pb-20 px-24 text-gray-700">
+      <SearchBar
+        onResetButtonClick={handleResetButtonClick}
+        onSearchInputChange={handleSearchInputChange}
+        searchInputValue={searchInputValue}
+      />
+      <AdvocateTable advocates={filteredAdvocates} />
     </main>
   );
 }
