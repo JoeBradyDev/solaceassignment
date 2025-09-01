@@ -1,8 +1,7 @@
-import db from "@/server/db";
-import { advocates } from "@/server/db/schema";
+import { advocateService } from "@/server/services/services";
 
 export async function GET() {
-  const data = await db.select().from(advocates);
+  const data = await advocateService.getAllAdvocates();
 
   return Response.json({ data });
 }
