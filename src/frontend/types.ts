@@ -1,4 +1,4 @@
-type Advocate = {
+export type Advocate = {
   id: number;
   firstName: string;
   lastName: string;
