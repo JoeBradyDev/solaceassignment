@@ -8,14 +8,20 @@ import { SearchBar } from "@/frontend/components/SearchBar";
 export default function Home() {
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
   const [searchInputValue, setSearchInputValue] = useState<string>("");
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10); // rows per page
+  const [totalPages, setTotalPages] = useState(1);
+
+  const fetchAdvocates = async (page: number, limit: number) => {
+    const response = await fetch(`/api/advocates?page=${page}&limit=${limit}`);
+    const json = await response.json();
+    setAdvocates(json.data);
+    setTotalPages(json.totalPages);
+  };
 
   useEffect(() => {
-    fetch("/api/advocates").then((response) => {
-      response.json().then((jsonResponse) => {
-        setAdvocates(jsonResponse.data);
-      });
-    });
-  }, []);
+    fetchAdvocates(page, limit);
+  }, [page, limit]);
 
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.currentTarget.value);
@@ -46,7 +52,12 @@ export default function Home() {
         onSearchInputChange={handleSearchInputChange}
         searchInputValue={searchInputValue}
       />
-      <AdvocateTable advocates={filteredAdvocates} />
+      <AdvocateTable
+        advocates={filteredAdvocates}
+        page={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
     </main>
   );
 }
