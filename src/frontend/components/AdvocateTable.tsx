@@ -1,3 +1,4 @@
+import React from "react";
 import { Advocate } from "../types";
 
 interface TableCell {
@@ -30,25 +31,34 @@ const TableHeaderCell: React.FC<TableCell> = ({ children, colSpan }) => (
 
 export interface TableProps {
   advocates: Advocate[];
+  page: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
 }
 
-export const AdvocateTable: React.FC<TableProps> = ({ advocates }) => {
+export const AdvocateTable: React.FC<TableProps> = ({
+  advocates,
+  page,
+  totalPages,
+  onPageChange,
+}) => {
   return (
-    <table className="w-full">
-      <thead>
-        <TableHeaderCell>First Name</TableHeaderCell>
-        <TableHeaderCell>Last Name</TableHeaderCell>
-        <TableHeaderCell>City</TableHeaderCell>
-        <TableHeaderCell>Degree</TableHeaderCell>
-        <TableHeaderCell>Years of Experience</TableHeaderCell>
-        <TableHeaderCell>Phone Number</TableHeaderCell>
-      </thead>
-      <tbody>
-        {advocates.map((advocate, index) => {
-          return (
-            <>
+    <div>
+      <table className="w-full">
+        <thead>
+          <tr>
+            <TableHeaderCell>First Name</TableHeaderCell>
+            <TableHeaderCell>Last Name</TableHeaderCell>
+            <TableHeaderCell>City</TableHeaderCell>
+            <TableHeaderCell>Degree</TableHeaderCell>
+            <TableHeaderCell>Years of Experience</TableHeaderCell>
+            <TableHeaderCell>Phone Number</TableHeaderCell>
+          </tr>
+        </thead>
+        <tbody>
+          {advocates.map((advocate, index) => (
+            <React.Fragment key={advocate.id}>
               <tr
-                key={advocate.id}
                 className={`border border-gray-300 border-b-sky-300 ${
                   index % 2 ? "bg-sky-50" : "bg-sky-100"
                 }`}
@@ -72,10 +82,30 @@ export const AdvocateTable: React.FC<TableProps> = ({ advocates }) => {
                   <div>{advocate.specialties.join(", ")}</div>
                 </SpecialtyCell>
               </tr>
-            </>
-          );
-        })}
-      </tbody>
-    </table>
+            </React.Fragment>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="flex justify-center mt-4 space-x-2">
+        <button
+          onClick={() => onPageChange(Math.max(page - 1, 1))}
+          disabled={page === 1}
+          className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <span className="px-3 py-1">
+          Page {page} of {totalPages}
+        </span>
+        <button
+          onClick={() => onPageChange(Math.min(page + 1, totalPages))}
+          disabled={page === totalPages}
+          className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
+    </div>
   );
 };
